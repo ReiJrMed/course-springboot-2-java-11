@@ -1,13 +1,18 @@
 package com.empresa.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_user")
 public class User implements Serializable{
 	
 	private final static long serialVersionUID = 1L;
@@ -17,6 +22,9 @@ public class User implements Serializable{
 	private Long id;
 	
 	private String name, email, phone, password;
+	
+	@OneToMany(mappedBy = "client") //indica a relação do user com o order e o elemento usado para mapear, no caso o client
+	private List<Order> orders = new ArrayList<>();
 	
 	public User() {
 		//como se está usando FrameWork é importante criar o construtor padrão
@@ -70,6 +78,10 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,5 +105,5 @@ public class User implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 }
