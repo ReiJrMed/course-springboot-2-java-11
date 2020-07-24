@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{
@@ -23,6 +25,9 @@ public class User implements Serializable{
 	
 	private String name, email, phone, password;
 	
+	//@JsonIgnrore Indica a plataforma Jakson que não aceita pedidos repetidos, para a plataforma jakson que salva no database
+	//isso para não gerar loop infinito salvando no banco de dados muitos pedidos iguais
+	@JsonIgnore //isso indica que a responsabilidade é do pedido de instanciar o seu cliente no springboot
 	@OneToMany(mappedBy = "client") //indica a relação do user com o order e o elemento usado para mapear, no caso o client
 	private List<Order> orders = new ArrayList<>();
 	

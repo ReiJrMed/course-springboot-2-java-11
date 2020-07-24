@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tb_order") //seta o nome da tabela, tendo em vista a necessidade de mudar por order ser palavra reservada de sql
 public class Order implements Serializable{
@@ -21,8 +23,11 @@ public class Order implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	//Indica que o instant será salvo no padrão UTC longitude 0, no caso timezone GMT
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant instant;
 	
+	//@JsonIgnore com o JsonIgnore aqui, o cliente é que vai instanciar todos os pedidos dele no spingboot
 	@ManyToOne//indica a relação de 1 para muitos(1 cliente para muitos pedidos) no banco de dados
 	@JoinColumn(name = "client_id")//indica o nome da coluna que vai receber a chave estrangeira
 	private User client;
