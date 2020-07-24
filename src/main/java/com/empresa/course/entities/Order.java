@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.empresa.course.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -25,7 +26,9 @@ public class Order implements Serializable{
 	
 	//Indica que o instant será salvo no padrão UTC longitude 0, no caso timezone GMT
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-	private Instant instant;
+	private Instant moment;
+	
+	private Integer orderStatus;
 	
 	//@JsonIgnore com o JsonIgnore aqui, o cliente é que vai instanciar todos os pedidos dele no spingboot
 	@ManyToOne//indica a relação de 1 para muitos(1 cliente para muitos pedidos) no banco de dados
@@ -36,9 +39,10 @@ public class Order implements Serializable{
 		
 	}
 
-	public Order(Long id, Instant instant, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		this.id = id;
-		this.instant = instant;
+		this.moment = moment;
+		setOrderStatus(orderStatus);	
 		this.client = client;
 	}
 
@@ -50,14 +54,23 @@ public class Order implements Serializable{
 		this.id = id;
 	}
 
-	public Instant getInstant() {
-		return instant;
+	public Instant getMoment() {
+		return moment;
 	}
 
-	public void setInstant(Instant instant) {
-		this.instant = instant;
+	public void setMoment(Instant moment) {
+		this.moment = moment;
 	}
 	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null)
+		  this.orderStatus = orderStatus.getCode();
+	}
+
 	public User getClient() {
 		return client;
 	}
