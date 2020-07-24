@@ -2,11 +2,20 @@ package com.empresa.course.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class User implements Serializable{
 	
 	private final static long serialVersionUID = 1L;
 	
+	@Id//indica o Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//indica que o id é auto-incrementado, depende do servidor do banco de dados (funciona nos principais como MySQL)
 	private Long id;
+	
 	private String name, email, phone, password;
 	
 	public User() {
