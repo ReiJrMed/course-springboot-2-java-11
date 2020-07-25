@@ -28,8 +28,8 @@ public class OrderResource {
 	@GetMapping("/{id}") //indica que vai usar como parâmetro o Id do banco de dados
 	public ResponseEntity<Order> findById(@PathVariable Long id){
 		//@PathVariable indica o parâmetro que será passado, deve vir antes da declaração do parâmetro
-		Order user = service.findById(id);
-		return ResponseEntity.ok().body(user);
+		Order order = service.findById(id);
+		return ResponseEntity.ok().body(order);
 	}
 	
 }
