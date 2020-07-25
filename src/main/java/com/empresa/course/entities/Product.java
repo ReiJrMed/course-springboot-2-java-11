@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -25,7 +27,10 @@ public class Product implements Serializable{
 	private Double price;
 	private String imgUrl;
 	
-	@Transient //comando para dizer ao Jpa não colocar isso em uma tabela
+	@ManyToMany
+	@JoinTable(name = "tb_category_product",
+	joinColumns = @JoinColumn(name = "product_id"),
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	//usa-se a interface Set e sua implementação hashset, que diferente da interface List e da implementação ArrayList
 	//set ajuda a evitar repetições, ou seja o mesmo produto não terá a mesma categoria duas vezes
