@@ -93,5 +93,12 @@ public class OrderItem implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}		
+	}
+	
+	public Double subTotal() {
+		if((quantity != null) && (price != null))
+		    return quantity*price;
+		else
+			return null;
+	}
 }

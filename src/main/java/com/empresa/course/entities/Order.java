@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.empresa.course.enums.OrderStatus;
@@ -40,6 +42,9 @@ public class Order implements Serializable{
 	
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) //nome do atributo Order em payment no mappedBy
+	private Payment payment;    //CascadeType.ALL indica que ambos serão indicicados com o mesmo Id (ou seja, id igual para ambos) 
 	
 	public Order() {
 		
@@ -88,6 +93,14 @@ public class Order implements Serializable{
 	public Set<OrderItem> getItems(){
 		return items;
 	}
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 
 	@Override
 	public int hashCode() {
@@ -112,5 +125,12 @@ public class Order implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public Double total() {
+		if(items != null)
+			return items.stream().map(x -> x.subTotal()).reduce(0.0, (x, y) -> x + y);
+		else
+			return null;		
 	}
 }

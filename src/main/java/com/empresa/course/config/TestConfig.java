@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.empresa.course.entities.Category;
 import com.empresa.course.entities.Order;
 import com.empresa.course.entities.OrderItem;
+import com.empresa.course.entities.Payment;
 import com.empresa.course.entities.Product;
 import com.empresa.course.entities.User;
 import com.empresa.course.enums.OrderStatus;
@@ -87,5 +88,9 @@ public class TestConfig implements CommandLineRunner{
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		
 		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+		
+		Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+		o1.setPayment(pay1); //nesse caso não precisa de repository próprio do Payment
+		orderRepository.save(o1); //como payment depende de order, ao atualizar order salva-se o payment automaticamente
 	}	
 }
