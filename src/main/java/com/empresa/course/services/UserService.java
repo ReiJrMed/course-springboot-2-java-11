@@ -25,5 +25,9 @@ public class UserService {
 		Optional<User> optionalUser = userRepository.findById(id); //esse método retorna um valor tipo optional
 		return optionalUser.get(); //.get() resgata o objeto instanciado no optional que é o User
 	}
+	
+	public User insert(User user) {
+		return userRepository.save(user); //O save por padrão já retorna o objeto salvo
+	}
 
 }
