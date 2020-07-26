@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.empresa.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order_item")
@@ -15,7 +16,7 @@ public class OrderItem implements Serializable{
 	private final static long serialVersionUID = 1L;
 	
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK();
 	
 	private Integer quantity;
 	private Double price;
@@ -35,6 +36,8 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	//na plataforma java EE isso é válido para evitar um loop de associação infinito com o orderitem e order, ese método que é chamado no loop
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
