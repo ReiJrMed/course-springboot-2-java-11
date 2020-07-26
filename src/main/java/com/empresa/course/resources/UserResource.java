@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,5 +50,11 @@ public class UserResource {
 				.toUri();//método para obter a URI a ser usada no método created, que terá como endereço users/id(do objeto salvo)
 		
 		return ResponseEntity.created(uri).body(user);//método para retornar o código http 201 que indica a criação de um objeto
-	}	
+	}
+	
+	@DeleteMapping(value = "/{id}") //Anotação que indica deleção
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		service.delete(id);
+		return ResponseEntity.noContent().build(); //retorna o código 204, que indica deleção
+	}
 }
