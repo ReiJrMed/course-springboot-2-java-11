@@ -69,6 +69,14 @@ public class OrderItem implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	public Double getSubTotal() {
+		//usa-se get antes do nome do método porque o SpringBoot reconhece o método quando tem get no nome
+		if((quantity != null) && (price != null))
+		    return quantity*price;
+		else
+			return null;
+	}
 
 	@Override
 	public int hashCode() {
@@ -93,12 +101,5 @@ public class OrderItem implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	public Double subTotal() {
-		if((quantity != null) && (price != null))
-		    return quantity*price;
-		else
-			return null;
-	}
+	}	
 }

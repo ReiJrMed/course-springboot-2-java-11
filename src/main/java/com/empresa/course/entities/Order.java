@@ -101,6 +101,14 @@ public class Order implements Serializable{
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+	
+	public Double getTotal() {
+		//usa-se get antes do nome do método porque o SpringBoot reconhece o método quando tem get no nome
+		if(items != null)
+			return items.stream().map(x -> x.getSubTotal()).reduce(0.0, (x, y) -> x + y);
+		else
+			return null;		
+	}
 
 	@Override
 	public int hashCode() {
@@ -125,12 +133,5 @@ public class Order implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	public Double total() {
-		if(items != null)
-			return items.stream().map(x -> x.subTotal()).reduce(0.0, (x, y) -> x + y);
-		else
-			return null;		
-	}
+	}	
 }
