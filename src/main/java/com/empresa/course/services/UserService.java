@@ -33,5 +33,21 @@ public class UserService {
 	public void delete(Long id) {
 		userRepository.deleteById(id);
 	}
+	
+	public User update(Long id, User user) {
+		User entity = userRepository.getOne(id);
+		//entity é entidade monitorada, o getOne(id) instancia o objeto, mas não vai ao database ainda
+		//sinaliza ao JPA que esse é um objeto monitorado para em seguida fazer operações de banco de dados com ele
+		
+		updateData(entity, user);
+		
+		return userRepository.save(entity); 
+	}
+
+	private void updateData(User entity, User user) {
+		entity.setName(user.getName());
+		entity.setEmail(user.getEmail());
+		entity.setPhone(user.getPhone());
+	}
 
 }
