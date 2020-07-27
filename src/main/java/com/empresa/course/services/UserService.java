@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.empresa.course.entities.User;
 import com.empresa.course.repositories.UserRepository;
+import com.empresa.course.services.exceptions.ResourceNotFoundException;
 
 //@Component //permite essa classe ser instanciada automaticamente com @Autowired se ela for um componente
 @Service //para ser mais específico indicando que é um serviço e ela ser instanciada automaticamente com @Autowired, prioriza-se ser específico
@@ -23,7 +24,9 @@ public class UserService {
 	
 	public User findById(Long id){
 		Optional<User> optionalUser = userRepository.findById(id); //esse método retorna um valor tipo optional
-		return optionalUser.get(); //.get() resgata o objeto instanciado no optional que é o User
+		return optionalUser.orElseThrow(() -> new ResourceNotFoundException(id));
+		//orElseThrow(() -> exc) tenta instanciar e salvar o objeto, se houver problema lança exceção
+		//optionalUser.get(); //.get() resgata o objeto instanciado no optional que é o User
 	}
 	
 	public User insert(User user) {
