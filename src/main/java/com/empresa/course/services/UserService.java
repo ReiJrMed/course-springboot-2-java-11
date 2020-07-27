@@ -3,6 +3,8 @@ package com.empresa.course.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,13 +49,17 @@ public class UserService {
 	}
 	
 	public User update(Long id, User user) {
-		User entity = userRepository.getOne(id);
-		//entity é entidade monitorada, o getOne(id) instancia o objeto, mas não vai ao database ainda
-		//sinaliza ao JPA que esse é um objeto monitorado para em seguida fazer operações de banco de dados com ele
-		
-		updateData(entity, user);
-		
-		return userRepository.save(entity); 
+		try {
+			User entity = userRepository.getOne(id);
+			//entity é entidade monitorada, o getOne(id) instancia o objeto, mas não vai ao database ainda
+			//sinaliza ao JPA que esse é um objeto monitorado para em seguida fazer operações de banco de dados com ele
+			
+			updateData(entity, user);
+			
+			return userRepository.save(entity);
+		} catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User user) {
